@@ -1,0 +1,451 @@
+{
+  "episode_id": "ep_001",
+  "windows": [
+    {
+      "window_id": "wk_2026_10",
+      "labels": {
+        "window_id": "wk_2026_10",
+        "account_outcomes": [
+          {
+            "account_id": "acct_123",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.30,
+                "opp_prob": 0.12,
+                "pipeline_value": 40000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.10,
+                "opp_prob": 0.03,
+                "pipeline_value": 7000
+              },
+              "nurture": {
+                "meeting_prob": 0.06,
+                "opp_prob": 0.02,
+                "pipeline_value": 4000
+              },
+              "recycle": {
+                "meeting_prob": 0.03,
+                "opp_prob": 0.01,
+                "pipeline_value": 1000
+              },
+              "disqualify": {
+                "meeting_prob": 0.00,
+                "opp_prob": 0.00,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.04,
+                "opp_prob": 0.01,
+                "pipeline_value": 2000
+              }
+            }
+          },
+          {
+            "account_id": "acct_456",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.14,
+                "opp_prob": 0.05,
+                "pipeline_value": 16000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.11,
+                "opp_prob": 0.04,
+                "pipeline_value": 12000
+              },
+              "nurture": {
+                "meeting_prob": 0.07,
+                "opp_prob": 0.02,
+                "pipeline_value": 6000
+              },
+              "recycle": {
+                "meeting_prob": 0.04,
+                "opp_prob": 0.01,
+                "pipeline_value": 1500
+              },
+              "disqualify": {
+                "meeting_prob": 0.00,
+                "opp_prob": 0.00,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.08,
+                "opp_prob": 0.03,
+                "pipeline_value": 9000
+              }
+            }
+          }
+        ],
+        "contact_outcomes": [
+          {
+            "account_id": "acct_123",
+            "default_contact_id": "ct_4",
+            "contacts": [
+              {
+                "contact_id": "ct_1",
+                "meeting_gain": 0.18,
+                "opp_gain": 0.07,
+                "pipeline_gain": 22000
+              },
+              {
+                "contact_id": "ct_2",
+                "meeting_gain": 0.14,
+                "opp_gain": 0.05,
+                "pipeline_gain": 17000
+              },
+              {
+                "contact_id": "ct_4",
+                "meeting_gain": 0.05,
+                "opp_gain": 0.01,
+                "pipeline_gain": 3000
+              }
+            ]
+          },
+          {
+            "account_id": "acct_456",
+            "default_contact_id": "ct_3",
+            "contacts": [
+              {
+                "contact_id": "ct_3",
+                "meeting_gain": 0.06,
+                "opp_gain": 0.02,
+                "pipeline_gain": 5000
+              }
+            ]
+          }
+        ],
+        "trigger_outcomes": [
+          {
+            "account_id": "acct_123",
+            "triggers": [
+              {
+                "event_id": "evt_1",
+                "relevance_gain": 1.0
+              },
+              {
+                "event_id": "evt_3",
+                "relevance_gain": 0.72
+              }
+            ]
+          },
+          {
+            "account_id": "acct_456",
+            "triggers": [
+              {
+                "event_id": "evt_2",
+                "relevance_gain": 0.84
+              },
+              {
+                "event_id": "evt_4",
+                "relevance_gain": 0.51
+              }
+            ]
+          }
+        ]
+      },
+      "policy_transitions": [
+        {
+          "account_id": "acct_123",
+          "actions": {
+            "human_touch": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true,
+              "next_window_outcome_modifiers": {
+                "human_touch": {
+                  "meeting_prob_multiplier": 0.7,
+                  "opp_prob_multiplier": 0.8,
+                  "pipeline_value_multiplier": 0.75
+                }
+              }
+            },
+            "automated_outbound": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false,
+              "next_window_outcome_modifiers": {
+                "human_touch": {
+                  "meeting_prob_multiplier": 1.05,
+                  "opp_prob_multiplier": 1.05,
+                  "pipeline_value_multiplier": 1.05
+                }
+              }
+            },
+            "nurture": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            },
+            "recycle": {
+              "cooldown_weeks": 1,
+              "remove_from_episode": false
+            },
+            "disqualify": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true
+            },
+            "wait": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            }
+          }
+        },
+        {
+          "account_id": "acct_456",
+          "actions": {
+            "human_touch": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false,
+              "next_window_outcome_modifiers": {
+                "human_touch": {
+                  "meeting_prob_multiplier": 0.8,
+                  "opp_prob_multiplier": 0.8,
+                  "pipeline_value_multiplier": 0.8
+                }
+              }
+            },
+            "automated_outbound": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false,
+              "next_window_outcome_modifiers": {
+                "human_touch": {
+                  "meeting_prob_multiplier": 1.2,
+                  "opp_prob_multiplier": 1.2,
+                  "pipeline_value_multiplier": 1.2
+                }
+              }
+            },
+            "nurture": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false,
+              "next_window_outcome_modifiers": {
+                "human_touch": {
+                  "meeting_prob_multiplier": 1.1,
+                  "opp_prob_multiplier": 1.1,
+                  "pipeline_value_multiplier": 1.1
+                }
+              }
+            },
+            "recycle": {
+              "cooldown_weeks": 1,
+              "remove_from_episode": false
+            },
+            "disqualify": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true
+            },
+            "wait": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false,
+              "next_window_outcome_modifiers": {
+                "human_touch": {
+                  "meeting_prob_multiplier": 0.9,
+                  "opp_prob_multiplier": 0.9,
+                  "pipeline_value_multiplier": 0.9
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "window_id": "wk_2026_11",
+      "labels": {
+        "window_id": "wk_2026_11",
+        "account_outcomes": [
+          {
+            "account_id": "acct_123",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.12,
+                "opp_prob": 0.04,
+                "pipeline_value": 18000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.07,
+                "opp_prob": 0.02,
+                "pipeline_value": 6000
+              },
+              "nurture": {
+                "meeting_prob": 0.05,
+                "opp_prob": 0.02,
+                "pipeline_value": 5000
+              },
+              "recycle": {
+                "meeting_prob": 0.02,
+                "opp_prob": 0.01,
+                "pipeline_value": 1000
+              },
+              "disqualify": {
+                "meeting_prob": 0.00,
+                "opp_prob": 0.00,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.04,
+                "opp_prob": 0.01,
+                "pipeline_value": 4000
+              }
+            }
+          },
+          {
+            "account_id": "acct_456",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.26,
+                "opp_prob": 0.10,
+                "pipeline_value": 35000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.10,
+                "opp_prob": 0.03,
+                "pipeline_value": 10000
+              },
+              "nurture": {
+                "meeting_prob": 0.06,
+                "opp_prob": 0.02,
+                "pipeline_value": 6000
+              },
+              "recycle": {
+                "meeting_prob": 0.03,
+                "opp_prob": 0.01,
+                "pipeline_value": 1500
+              },
+              "disqualify": {
+                "meeting_prob": 0.00,
+                "opp_prob": 0.00,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.05,
+                "opp_prob": 0.02,
+                "pipeline_value": 4000
+              }
+            }
+          }
+        ],
+        "contact_outcomes": [
+          {
+            "account_id": "acct_123",
+            "default_contact_id": "ct_4",
+            "contacts": [
+              {
+                "contact_id": "ct_1",
+                "meeting_gain": 0.09,
+                "opp_gain": 0.03,
+                "pipeline_gain": 9000
+              },
+              {
+                "contact_id": "ct_2",
+                "meeting_gain": 0.11,
+                "opp_gain": 0.04,
+                "pipeline_gain": 11000
+              },
+              {
+                "contact_id": "ct_4",
+                "meeting_gain": 0.04,
+                "opp_gain": 0.01,
+                "pipeline_gain": 2000
+              }
+            ]
+          },
+          {
+            "account_id": "acct_456",
+            "default_contact_id": "ct_3",
+            "contacts": [
+              {
+                "contact_id": "ct_3",
+                "meeting_gain": 0.12,
+                "opp_gain": 0.05,
+                "pipeline_gain": 18000
+              }
+            ]
+          }
+        ],
+        "trigger_outcomes": [
+          {
+            "account_id": "acct_123",
+            "triggers": [
+              {
+                "event_id": "evt_5",
+                "relevance_gain": 0.66
+              }
+            ]
+          },
+          {
+            "account_id": "acct_456",
+            "triggers": [
+              {
+                "event_id": "evt_6",
+                "relevance_gain": 1.0
+              },
+              {
+                "event_id": "evt_7",
+                "relevance_gain": 0.55
+              }
+            ]
+          }
+        ]
+      },
+      "policy_transitions": [
+        {
+          "account_id": "acct_123",
+          "actions": {
+            "human_touch": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true
+            },
+            "automated_outbound": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            },
+            "nurture": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            },
+            "recycle": {
+              "cooldown_weeks": 1,
+              "remove_from_episode": false
+            },
+            "disqualify": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true
+            },
+            "wait": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            }
+          }
+        },
+        {
+          "account_id": "acct_456",
+          "actions": {
+            "human_touch": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true
+            },
+            "automated_outbound": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            },
+            "nurture": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            },
+            "recycle": {
+              "cooldown_weeks": 1,
+              "remove_from_episode": false
+            },
+            "disqualify": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": true
+            },
+            "wait": {
+              "cooldown_weeks": 0,
+              "remove_from_episode": false
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/capacity_budget.schema.json",
+  "title": "Capacity Budget",
+  "description": "Weekly SDR capacity model. Canonical action keys stay stable, but common sales-language labels include Personalized SDR Outreach for human_touch and Monitor / No Action for wait.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "window_id",
+    "human_sdr_actions",
+    "max_contacts_per_account",
+    "channel_costs"
+  ],
+  "properties": {
+    "window_id": {
+      "description": "Weekly book or queue identifier.",
+      "type": "string",
+      "minLength": 1
+    },
+    "human_sdr_actions": {
+      "description": "Rep-capacity slots available for personalized SDR outreach this week.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_contacts_per_account": {
+      "description": "Maximum target contacts the rep can work on one account in a week.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "channel_costs": {
+      "description": "Relative effort cost for each canonical routing action.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human_touch",
+        "automated_outbound",
+        "nurture",
+        "recycle",
+        "wait",
+        "disqualify"
+      ],
+      "properties": {
+        "human_touch": {
+          "description": "Personalized SDR Outreach cost.",
+          "type": "number",
+          "minimum": 0
+        },
+        "automated_outbound": {
+          "description": "Sequence Enrollment cost.",
+          "type": "number",
+          "minimum": 0
+        },
+        "nurture": {
+          "description": "Marketing Nurture cost.",
+          "type": "number",
+          "minimum": 0
+        },
+        "recycle": {
+          "description": "Recycle / Snooze cost.",
+          "type": "number",
+          "minimum": 0
+        },
+        "wait": {
+          "description": "Monitor / No Action cost.",
+          "type": "number",
+          "minimum": 0
+        },
+        "disqualify": {
+          "description": "Disqualify cost.",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

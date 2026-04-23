@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/contact_snapshot.schema.json",
+  "title": "Contact Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contact_id",
+    "account_id",
+    "name_redacted",
+    "title",
+    "function",
+    "seniority",
+    "department",
+    "likely_buying_role",
+    "is_decision_maker_proxy",
+    "historical_reply_rate_bucket",
+    "channel_reachability",
+    "recent_activity"
+  ],
+  "properties": {
+    "contact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name_redacted": {
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "function": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seniority": {
+      "type": "string",
+      "minLength": 1
+    },
+    "department": {
+      "type": "string",
+      "minLength": 1
+    },
+    "likely_buying_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "is_decision_maker_proxy": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "historical_reply_rate_bucket": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "unknown"]
+    },
+    "channel_reachability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "email_valid",
+        "phone_valid",
+        "linkedin_present"
+      ],
+      "properties": {
+        "email_valid": {"type": "boolean"},
+        "phone_valid": {"type": "boolean"},
+        "linkedin_present": {"type": "boolean"}
+      }
+    },
+    "recent_activity": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "job_change_90d",
+        "content_engagement_30d"
+      ],
+      "properties": {
+        "job_change_90d": {"type": "boolean"},
+        "content_engagement_30d": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

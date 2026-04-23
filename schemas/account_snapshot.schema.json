@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/account_snapshot.schema.json",
+  "title": "Account Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "account_id",
+    "snapshot_ts",
+    "segment",
+    "relationship_motion",
+    "account_tier",
+    "industry",
+    "employee_count",
+    "revenue_band",
+    "hq_region",
+    "sales_geo",
+    "technographics",
+    "crm_state",
+    "web_engagement",
+    "product_or_usage_signals",
+    "trigger_events",
+    "available_contacts",
+    "label_window_id"
+  ],
+  "properties": {
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "snapshot_ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "segment": {
+      "type": "string",
+      "enum": ["mid_market", "enterprise"]
+    },
+    "relationship_motion": {
+      "type": "string",
+      "enum": ["net_new", "product_led_pre_opportunity"]
+    },
+    "account_tier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "industry": {
+      "type": "string",
+      "minLength": 1
+    },
+    "employee_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "revenue_band": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hq_region": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sales_geo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "technographics": {
+      "type": "object",
+      "required": ["competitors_present"],
+      "properties": {
+        "cloud_provider": {"type": "string"},
+        "identity_provider": {"type": "string"},
+        "data_platform": {"type": "string"},
+        "security_tools": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "competitors_present": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
+    },
+    "crm_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_stage",
+        "owner_role",
+        "past_meetings_365d",
+        "past_opps_365d",
+        "days_since_last_human_touch",
+        "days_since_last_outbound_sequence",
+        "has_open_opportunity",
+        "open_support_escalation"
+      ],
+      "properties": {
+        "current_stage": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "past_meetings_365d": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "past_opps_365d": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "days_since_last_human_touch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "days_since_last_outbound_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "has_open_opportunity": {
+          "type": "boolean"
+        },
+        "open_support_escalation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "web_engagement": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "pricing_visits_30d",
+        "product_pages_30d",
+        "high_intent_content_downloads_30d",
+        "trial_signups_30d"
+      ],
+      "properties": {
+        "pricing_visits_30d": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "product_pages_30d": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "high_intent_content_downloads_30d": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "trial_signups_30d": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "product_or_usage_signals": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "seat_growth_30d",
+        "active_users_growth_30d",
+        "feature_adoption_flags"
+      ],
+      "properties": {
+        "seat_growth_30d": {
+          "type": "number"
+        },
+        "active_users_growth_30d": {
+          "type": "number"
+        },
+        "feature_adoption_flags": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "trigger_events": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "available_contacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "label_window_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json",
+  "title": "Policy Episode Labels",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "episode_id",
+    "windows"
+  ],
+  "properties": {
+    "episode_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "windows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "window_id",
+          "labels",
+          "policy_transitions"
+        ],
+        "properties": {
+          "window_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "labels": {
+            "$ref": "hidden_labels.schema.json"
+          },
+          "policy_transitions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "account_id",
+                "actions"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "actions": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "human_touch",
+                    "automated_outbound",
+                    "nurture",
+                    "recycle",
+                    "disqualify",
+                    "wait"
+                  ],
+                  "properties": {
+                    "human_touch": {
+                      "$ref": "#/$defs/policyTransition"
+                    },
+                    "automated_outbound": {
+                      "$ref": "#/$defs/policyTransition"
+                    },
+                    "nurture": {
+                      "$ref": "#/$defs/policyTransition"
+                    },
+                    "recycle": {
+                      "$ref": "#/$defs/policyTransition"
+                    },
+                    "disqualify": {
+                      "$ref": "#/$defs/policyTransition"
+                    },
+                    "wait": {
+                      "$ref": "#/$defs/policyTransition"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "policyTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cooldown_weeks",
+        "remove_from_episode"
+      ],
+      "properties": {
+        "cooldown_weeks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "remove_from_episode": {
+          "type": "boolean"
+        },
+        "next_window_outcome_modifiers": {
+          "$ref": "#/$defs/actionOutcomeModifierMap"
+        }
+      }
+    },
+    "actionOutcomeModifierMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "human_touch": {
+          "$ref": "#/$defs/actionOutcomeModifier"
+        },
+        "automated_outbound": {
+          "$ref": "#/$defs/actionOutcomeModifier"
+        },
+        "nurture": {
+          "$ref": "#/$defs/actionOutcomeModifier"
+        },
+        "recycle": {
+          "$ref": "#/$defs/actionOutcomeModifier"
+        },
+        "disqualify": {
+          "$ref": "#/$defs/actionOutcomeModifier"
+        },
+        "wait": {
+          "$ref": "#/$defs/actionOutcomeModifier"
+        }
+      }
+    },
+    "actionOutcomeModifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meeting_prob_multiplier",
+        "opp_prob_multiplier",
+        "pipeline_value_multiplier"
+      ],
+      "properties": {
+        "meeting_prob_multiplier": {
+          "type": "number",
+          "minimum": 0
+        },
+        "opp_prob_multiplier": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pipeline_value_multiplier": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/robustness_suite.schema.json",
+  "title": "Robustness Suite",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "suite_id",
+    "cases"
+  ],
+  "properties": {
+    "suite_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/case"
+      }
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "robustness_type",
+        "window"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "robustness_type": {
+          "type": "string",
+          "enum": [
+            "heldout_slice",
+            "distribution_shift"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "holdout_dimension": {
+          "type": "string",
+          "enum": [
+            "segment",
+            "industry",
+            "region",
+            "intent_presence",
+            "relationship_motion",
+            "data_density"
+          ]
+        },
+        "holdout_values": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "shift_tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "window": {
+          "$ref": "evaluation_window.schema.json"
+        },
+        "labels": {
+          "$ref": "hidden_labels.schema.json"
+        }
+      }
+    }
+  }
+}

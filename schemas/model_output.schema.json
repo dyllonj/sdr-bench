@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/model_output.schema.json",
+  "title": "Model Output",
+  "description": "Submission format for a single weekly SDR book. Canonical action keys stay stable, but sales-facing labels include Personalized SDR Outreach for human_touch and Sequence Enrollment for automated_outbound.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "window_id",
+    "decisions"
+  ],
+  "properties": {
+    "window_id": {
+      "description": "Weekly book or queue identifier.",
+      "type": "string",
+      "minLength": 1
+    },
+    "decisions": {
+      "description": "Per-account routing and prioritization decisions for the week.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "account_id",
+          "chosen_action",
+          "action_score"
+        ],
+        "properties": {
+          "account_id": {
+            "description": "Account being routed or prioritized.",
+            "type": "string",
+            "minLength": 1
+          },
+          "human_touch_rank": {
+            "description": "Priority rank inside the personalized SDR outreach queue.",
+            "type": "integer",
+            "minimum": 1
+          },
+          "chosen_action": {
+            "description": "Canonical routing action. Sales-facing labels are Personalized SDR Outreach, Sequence Enrollment, Marketing Nurture, Recycle / Snooze, Disqualify, and Monitor / No Action.",
+            "type": "string",
+            "enum": [
+              "human_touch",
+              "automated_outbound",
+              "nurture",
+              "recycle",
+              "disqualify",
+              "wait"
+            ]
+          },
+          "action_score": {
+            "description": "Model confidence or priority score for the chosen routing decision.",
+            "type": "number"
+          },
+          "selected_contacts": {
+            "description": "Target contacts for personalized SDR outreach on the account.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string"}
+          },
+          "primary_trigger_event_id": {
+            "description": "Primary why-now signal supporting immediate outreach.",
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_brief": {
+            "description": "Structured account research brief supporting the recommended outreach motion.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "why_account_codes",
+              "why_now_code",
+              "why_persona_code",
+              "why_channel_code",
+              "citations"
+            ],
+            "properties": {
+              "why_account_codes": {
+                "description": "Structured ICP or account-selection reasons for working the account.",
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$"
+                }
+              },
+              "why_account_text": {
+                "description": "Optional free-text account rationale for human readability.",
+                "type": "string"
+              },
+              "why_now_code": {
+                "description": "Structured why-now code for the primary signal.",
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "why_now_text": {
+                "description": "Optional free-text why-now explanation.",
+                "type": "string"
+              },
+              "why_persona_code": {
+                "description": "Structured buying-center or persona-selection rationale.",
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "why_persona_text": {
+                "description": "Optional free-text persona rationale.",
+                "type": "string"
+              },
+              "why_channel_code": {
+                "description": "Structured channel or sequence choice rationale.",
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+              },
+              "why_channel_text": {
+                "description": "Optional free-text channel rationale.",
+                "type": "string"
+              },
+              "citations": {
+                "description": "Supporting account research documents cited by the brief.",
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"type": "string"}
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "chosen_action": {
+                  "const": "human_touch"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "human_touch_rank",
+                "selected_contacts",
+                "primary_trigger_event_id",
+                "evidence_brief"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

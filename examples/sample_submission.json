@@ -1,0 +1,29 @@
+{
+  "window_id": "wk_2026_10",
+  "decisions": [
+    {
+      "account_id": "acct_123",
+      "human_touch_rank": 1,
+      "chosen_action": "human_touch",
+      "action_score": 0.93,
+      "selected_contacts": ["ct_1", "ct_2"],
+      "primary_trigger_event_id": "evt_1",
+      "evidence_brief": {
+        "why_account_codes": ["enterprise_icp_fit", "intent_surge"],
+        "why_account_text": "High-fit enterprise account with recent buying signals.",
+        "why_now_code": "leadership_change_recent",
+        "why_now_text": "Leadership change and pricing-page surge in the last 7 days.",
+        "why_persona_code": "technical_buyer_plus_security_champion",
+        "why_persona_text": "VP IT plus Security Director match the buying center.",
+        "why_channel_code": "email_valid_plus_recent_web_intent",
+        "why_channel_text": "Email is valid and recent web engagement suggests reachable interest.",
+        "citations": ["doc_991", "doc_998", "doc_999", "doc_1000"]
+      }
+    },
+    {
+      "account_id": "acct_456",
+      "chosen_action": "automated_outbound",
+      "action_score": 0.51
+    }
+  ]
+}

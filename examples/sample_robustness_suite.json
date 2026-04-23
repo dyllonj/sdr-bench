@@ -1,0 +1,866 @@
+{
+  "suite_id": "robust_v0_sample",
+  "cases": [
+    {
+      "case_id": "holdout_financial_services",
+      "robustness_type": "heldout_slice",
+      "description": "Held-out financial services named-account window.",
+      "holdout_dimension": "industry",
+      "holdout_values": [
+        "financial_services"
+      ],
+      "window": {
+        "window_id": "wk_holdout_finserv",
+        "accounts": [
+          {
+            "account_id": "acct_123",
+            "snapshot_ts": "2026-03-02T00:00:00Z",
+            "segment": "enterprise",
+            "relationship_motion": "net_new",
+            "account_tier": "tier_1_named",
+            "industry": "financial_services",
+            "employee_count": 4500,
+            "revenue_band": "1b_5b",
+            "hq_region": "NA",
+            "sales_geo": "NA_enterprise",
+            "technographics": {
+              "cloud_provider": "aws",
+              "identity_provider": "okta",
+              "data_platform": "snowflake",
+              "security_tools": [
+                "crowdstrike"
+              ],
+              "competitors_present": [
+                "vendor_x"
+              ]
+            },
+            "crm_state": {
+              "current_stage": "none",
+              "owner_role": "SDR_pool",
+              "past_meetings_365d": 0,
+              "past_opps_365d": 0,
+              "days_since_last_human_touch": 61,
+              "days_since_last_outbound_sequence": 19,
+              "has_open_opportunity": false,
+              "open_support_escalation": false
+            },
+            "web_engagement": {
+              "pricing_visits_30d": 4,
+              "product_pages_30d": 12,
+              "high_intent_content_downloads_30d": 1,
+              "trial_signups_30d": 0
+            },
+            "product_or_usage_signals": {
+              "seat_growth_30d": 0.18,
+              "active_users_growth_30d": 0.09,
+              "feature_adoption_flags": [
+                "security_module"
+              ]
+            },
+            "trigger_events": [
+              "evt_1",
+              "evt_3"
+            ],
+            "available_contacts": [
+              "ct_1",
+              "ct_2",
+              "ct_4"
+            ],
+            "label_window_id": "wk_holdout_finserv"
+          }
+        ],
+        "contacts": [
+          {
+            "contact_id": "ct_1",
+            "account_id": "acct_123",
+            "name_redacted": true,
+            "title": "VP of IT",
+            "function": "IT",
+            "seniority": "VP",
+            "department": "Infrastructure",
+            "likely_buying_role": "technical_buyer",
+            "is_decision_maker_proxy": 0.61,
+            "historical_reply_rate_bucket": "medium",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": false,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": false,
+              "content_engagement_30d": 2
+            }
+          },
+          {
+            "contact_id": "ct_2",
+            "account_id": "acct_123",
+            "name_redacted": true,
+            "title": "Security Director",
+            "function": "Security",
+            "seniority": "Director",
+            "department": "Security",
+            "likely_buying_role": "champion",
+            "is_decision_maker_proxy": 0.42,
+            "historical_reply_rate_bucket": "high",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": true,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": false,
+              "content_engagement_30d": 4
+            }
+          },
+          {
+            "contact_id": "ct_4",
+            "account_id": "acct_123",
+            "name_redacted": true,
+            "title": "Senior Infrastructure Manager",
+            "function": "IT",
+            "seniority": "Manager",
+            "department": "Infrastructure",
+            "likely_buying_role": "user",
+            "is_decision_maker_proxy": 0.21,
+            "historical_reply_rate_bucket": "low",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": false,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": false,
+              "content_engagement_30d": 1
+            }
+          }
+        ],
+        "triggers": [
+          {
+            "event_id": "evt_1",
+            "account_id": "acct_123",
+            "event_ts": "2026-02-25T00:00:00Z",
+            "event_type": "leadership_change",
+            "source_type": "news",
+            "confidence": 0.84,
+            "recency_days": 5,
+            "evidence_refs": [
+              "doc_991"
+            ]
+          },
+          {
+            "event_id": "evt_3",
+            "account_id": "acct_123",
+            "event_ts": "2026-02-12T00:00:00Z",
+            "event_type": "funding",
+            "source_type": "news",
+            "confidence": 0.63,
+            "recency_days": 18,
+            "evidence_refs": [
+              "doc_993"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "doc_id": "doc_991",
+            "account_id": "acct_123",
+            "source_type": "news",
+            "published_ts": "2026-02-25T11:32:00Z",
+            "excerpt": "Leadership changes suggest a fresh infrastructure review.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_now_codes": [
+                "leadership_change_recent"
+              ],
+              "related_event_ids": [
+                "evt_1"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_993",
+            "account_id": "acct_123",
+            "source_type": "news",
+            "published_ts": "2026-02-12T08:30:00Z",
+            "excerpt": "A fresh funding round may enable longer-term platform projects.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_now_codes": [
+                "funding_recent"
+              ],
+              "related_event_ids": [
+                "evt_3"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_998",
+            "account_id": "acct_123",
+            "source_type": "crm",
+            "published_ts": "2026-03-02T00:00:00Z",
+            "excerpt": "The account is a tier-1 named enterprise target with strong ICP fit.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_account_codes": [
+                "enterprise_icp_fit"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_999",
+            "account_id": "acct_123",
+            "source_type": "web",
+            "published_ts": "2026-03-01T14:00:00Z",
+            "excerpt": "Pricing-page and product-page activity spiked over the last week.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_account_codes": [
+                "intent_surge"
+              ],
+              "why_channel_codes": [
+                "email_valid_plus_recent_web_intent"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_1000",
+            "account_id": "acct_123",
+            "source_type": "contact",
+            "published_ts": "2026-03-02T00:00:00Z",
+            "excerpt": "The VP of IT and Security Director are both reachable and cover the buying center.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_persona_codes": [
+                "technical_buyer_plus_security_champion"
+              ],
+              "why_channel_codes": [
+                "email_valid_plus_recent_web_intent"
+              ]
+            }
+          }
+        ],
+        "capacity_budget": {
+          "window_id": "wk_holdout_finserv",
+          "human_sdr_actions": 1,
+          "max_contacts_per_account": 3,
+          "channel_costs": {
+            "human_touch": 1.0,
+            "automated_outbound": 0.15,
+            "nurture": 0.05,
+            "recycle": 0.02,
+            "wait": 0.0,
+            "disqualify": 0.0
+          }
+        }
+      },
+      "labels": {
+        "window_id": "wk_holdout_finserv",
+        "account_outcomes": [
+          {
+            "account_id": "acct_123",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.3,
+                "opp_prob": 0.12,
+                "pipeline_value": 40000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.1,
+                "opp_prob": 0.03,
+                "pipeline_value": 7000
+              },
+              "nurture": {
+                "meeting_prob": 0.06,
+                "opp_prob": 0.02,
+                "pipeline_value": 4000
+              },
+              "recycle": {
+                "meeting_prob": 0.03,
+                "opp_prob": 0.01,
+                "pipeline_value": 1000
+              },
+              "disqualify": {
+                "meeting_prob": 0.0,
+                "opp_prob": 0.0,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.04,
+                "opp_prob": 0.01,
+                "pipeline_value": 2000
+              }
+            }
+          }
+        ],
+        "contact_outcomes": [
+          {
+            "account_id": "acct_123",
+            "default_contact_id": "ct_4",
+            "contacts": [
+              {
+                "contact_id": "ct_1",
+                "meeting_gain": 0.18,
+                "opp_gain": 0.07,
+                "pipeline_gain": 22000
+              },
+              {
+                "contact_id": "ct_2",
+                "meeting_gain": 0.14,
+                "opp_gain": 0.05,
+                "pipeline_gain": 17000
+              },
+              {
+                "contact_id": "ct_4",
+                "meeting_gain": 0.05,
+                "opp_gain": 0.01,
+                "pipeline_gain": 3000
+              }
+            ]
+          }
+        ],
+        "trigger_outcomes": [
+          {
+            "account_id": "acct_123",
+            "triggers": [
+              {
+                "event_id": "evt_1",
+                "relevance_gain": 1.0
+              },
+              {
+                "event_id": "evt_3",
+                "relevance_gain": 0.72
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "distribution_shift_trigger_heavy",
+      "robustness_type": "distribution_shift",
+      "description": "Trigger-heavy and higher-intent window with changed prevalence.",
+      "shift_tags": [
+        "trigger_prevalence_up",
+        "intent_density_up"
+      ],
+      "window": {
+        "window_id": "wk_shift_trigger_heavy",
+        "accounts": [
+          {
+            "account_id": "acct_123",
+            "snapshot_ts": "2026-03-02T00:00:00Z",
+            "segment": "enterprise",
+            "relationship_motion": "net_new",
+            "account_tier": "tier_1_named",
+            "industry": "financial_services",
+            "employee_count": 4500,
+            "revenue_band": "1b_5b",
+            "hq_region": "NA",
+            "sales_geo": "NA_enterprise",
+            "technographics": {
+              "cloud_provider": "aws",
+              "identity_provider": "okta",
+              "data_platform": "snowflake",
+              "security_tools": [
+                "crowdstrike"
+              ],
+              "competitors_present": [
+                "vendor_x"
+              ]
+            },
+            "crm_state": {
+              "current_stage": "none",
+              "owner_role": "SDR_pool",
+              "past_meetings_365d": 0,
+              "past_opps_365d": 0,
+              "days_since_last_human_touch": 61,
+              "days_since_last_outbound_sequence": 19,
+              "has_open_opportunity": false,
+              "open_support_escalation": false
+            },
+            "web_engagement": {
+              "pricing_visits_30d": 6,
+              "product_pages_30d": 12,
+              "high_intent_content_downloads_30d": 2,
+              "trial_signups_30d": 0
+            },
+            "product_or_usage_signals": {
+              "seat_growth_30d": 0.18,
+              "active_users_growth_30d": 0.09,
+              "feature_adoption_flags": [
+                "security_module"
+              ]
+            },
+            "trigger_events": [
+              "evt_1",
+              "evt_3"
+            ],
+            "available_contacts": [
+              "ct_1",
+              "ct_2",
+              "ct_4"
+            ],
+            "label_window_id": "wk_shift_trigger_heavy"
+          },
+          {
+            "account_id": "acct_456",
+            "snapshot_ts": "2026-03-02T00:00:00Z",
+            "segment": "enterprise",
+            "relationship_motion": "product_led_pre_opportunity",
+            "account_tier": "tier_2_named",
+            "industry": "software",
+            "employee_count": 1200,
+            "revenue_band": "250m_1b",
+            "hq_region": "NA",
+            "sales_geo": "NA_enterprise",
+            "technographics": {
+              "cloud_provider": "gcp",
+              "identity_provider": "okta",
+              "data_platform": "bigquery",
+              "security_tools": [
+                "wiz"
+              ],
+              "competitors_present": []
+            },
+            "crm_state": {
+              "current_stage": "none",
+              "owner_role": "SDR_pool",
+              "past_meetings_365d": 1,
+              "past_opps_365d": 0,
+              "days_since_last_human_touch": 45,
+              "days_since_last_outbound_sequence": 7,
+              "has_open_opportunity": false,
+              "open_support_escalation": false
+            },
+            "web_engagement": {
+              "pricing_visits_30d": 1,
+              "product_pages_30d": 8,
+              "high_intent_content_downloads_30d": 0,
+              "trial_signups_30d": 2
+            },
+            "product_or_usage_signals": {
+              "seat_growth_30d": 0.04,
+              "active_users_growth_30d": 0.06,
+              "feature_adoption_flags": [
+                "governance_module"
+              ]
+            },
+            "trigger_events": [
+              "evt_2",
+              "evt_4"
+            ],
+            "available_contacts": [
+              "ct_3"
+            ],
+            "label_window_id": "wk_shift_trigger_heavy"
+          }
+        ],
+        "contacts": [
+          {
+            "contact_id": "ct_1",
+            "account_id": "acct_123",
+            "name_redacted": true,
+            "title": "VP of IT",
+            "function": "IT",
+            "seniority": "VP",
+            "department": "Infrastructure",
+            "likely_buying_role": "technical_buyer",
+            "is_decision_maker_proxy": 0.61,
+            "historical_reply_rate_bucket": "medium",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": false,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": false,
+              "content_engagement_30d": 2
+            }
+          },
+          {
+            "contact_id": "ct_2",
+            "account_id": "acct_123",
+            "name_redacted": true,
+            "title": "Security Director",
+            "function": "Security",
+            "seniority": "Director",
+            "department": "Security",
+            "likely_buying_role": "champion",
+            "is_decision_maker_proxy": 0.42,
+            "historical_reply_rate_bucket": "high",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": true,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": false,
+              "content_engagement_30d": 4
+            }
+          },
+          {
+            "contact_id": "ct_4",
+            "account_id": "acct_123",
+            "name_redacted": true,
+            "title": "Senior Infrastructure Manager",
+            "function": "IT",
+            "seniority": "Manager",
+            "department": "Infrastructure",
+            "likely_buying_role": "user",
+            "is_decision_maker_proxy": 0.21,
+            "historical_reply_rate_bucket": "low",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": false,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": false,
+              "content_engagement_30d": 1
+            }
+          },
+          {
+            "contact_id": "ct_3",
+            "account_id": "acct_456",
+            "name_redacted": true,
+            "title": "Head of Platform",
+            "function": "Engineering",
+            "seniority": "Head",
+            "department": "Platform",
+            "likely_buying_role": "technical_buyer",
+            "is_decision_maker_proxy": 0.58,
+            "historical_reply_rate_bucket": "medium",
+            "channel_reachability": {
+              "email_valid": true,
+              "phone_valid": false,
+              "linkedin_present": true
+            },
+            "recent_activity": {
+              "job_change_90d": true,
+              "content_engagement_30d": 1
+            }
+          }
+        ],
+        "triggers": [
+          {
+            "event_id": "evt_1",
+            "account_id": "acct_123",
+            "event_ts": "2026-02-25T00:00:00Z",
+            "event_type": "leadership_change",
+            "source_type": "news",
+            "confidence": 0.84,
+            "recency_days": 3,
+            "evidence_refs": [
+              "doc_991"
+            ]
+          },
+          {
+            "event_id": "evt_2",
+            "account_id": "acct_456",
+            "event_ts": "2026-02-27T00:00:00Z",
+            "event_type": "usage_change",
+            "source_type": "product",
+            "confidence": 0.76,
+            "recency_days": 1,
+            "evidence_refs": [
+              "doc_992"
+            ]
+          },
+          {
+            "event_id": "evt_3",
+            "account_id": "acct_123",
+            "event_ts": "2026-02-12T00:00:00Z",
+            "event_type": "funding",
+            "source_type": "news",
+            "confidence": 0.63,
+            "recency_days": 16,
+            "evidence_refs": [
+              "doc_993"
+            ]
+          },
+          {
+            "event_id": "evt_4",
+            "account_id": "acct_456",
+            "event_ts": "2026-02-14T00:00:00Z",
+            "event_type": "hiring",
+            "source_type": "jobs",
+            "confidence": 0.58,
+            "recency_days": 14,
+            "evidence_refs": [
+              "doc_994"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "doc_id": "doc_991",
+            "account_id": "acct_123",
+            "source_type": "news",
+            "published_ts": "2026-02-25T11:32:00Z",
+            "excerpt": "Leadership changes suggest a fresh infrastructure review.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_now_codes": [
+                "leadership_change_recent"
+              ],
+              "related_event_ids": [
+                "evt_1"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_992",
+            "account_id": "acct_456",
+            "source_type": "product",
+            "published_ts": "2026-02-27T09:10:00Z",
+            "excerpt": "Workspace usage crossed an enterprise expansion threshold.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_account_codes": [
+                "product_usage_growth",
+                "intent_surge"
+              ],
+              "why_channel_codes": [
+                "email_valid_plus_recent_web_intent"
+              ],
+              "related_event_ids": [
+                "evt_2"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_993",
+            "account_id": "acct_123",
+            "source_type": "news",
+            "published_ts": "2026-02-12T08:30:00Z",
+            "excerpt": "A fresh funding round may enable longer-term platform projects.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_now_codes": [
+                "funding_recent"
+              ],
+              "related_event_ids": [
+                "evt_3"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_994",
+            "account_id": "acct_456",
+            "source_type": "jobs",
+            "published_ts": "2026-02-14T10:00:00Z",
+            "excerpt": "The company opened several platform-engineering roles this month.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_now_codes": [
+                "hiring_recent"
+              ],
+              "related_event_ids": [
+                "evt_4"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_998",
+            "account_id": "acct_123",
+            "source_type": "crm",
+            "published_ts": "2026-03-02T00:00:00Z",
+            "excerpt": "The account is a tier-1 named enterprise target with strong ICP fit.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_account_codes": [
+                "enterprise_icp_fit"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_999",
+            "account_id": "acct_123",
+            "source_type": "web",
+            "published_ts": "2026-03-01T14:00:00Z",
+            "excerpt": "Pricing-page and product-page activity spiked over the last week.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_account_codes": [
+                "intent_surge"
+              ],
+              "why_channel_codes": [
+                "email_valid_plus_recent_web_intent"
+              ]
+            }
+          },
+          {
+            "doc_id": "doc_1000",
+            "account_id": "acct_123",
+            "source_type": "contact",
+            "published_ts": "2026-03-02T00:00:00Z",
+            "excerpt": "The VP of IT and Security Director are both reachable and cover the buying center.",
+            "allowed_for_grounding": true,
+            "grounding_support": {
+              "why_persona_codes": [
+                "technical_buyer_plus_security_champion"
+              ],
+              "why_channel_codes": [
+                "email_valid_plus_recent_web_intent"
+              ]
+            }
+          }
+        ],
+        "capacity_budget": {
+          "window_id": "wk_shift_trigger_heavy",
+          "human_sdr_actions": 1,
+          "max_contacts_per_account": 3,
+          "channel_costs": {
+            "human_touch": 1.0,
+            "automated_outbound": 0.15,
+            "nurture": 0.05,
+            "recycle": 0.02,
+            "wait": 0.0,
+            "disqualify": 0.0
+          }
+        }
+      },
+      "labels": {
+        "window_id": "wk_shift_trigger_heavy",
+        "account_outcomes": [
+          {
+            "account_id": "acct_123",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.3,
+                "opp_prob": 0.12,
+                "pipeline_value": 40000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.1,
+                "opp_prob": 0.03,
+                "pipeline_value": 7000
+              },
+              "nurture": {
+                "meeting_prob": 0.06,
+                "opp_prob": 0.02,
+                "pipeline_value": 4000
+              },
+              "recycle": {
+                "meeting_prob": 0.03,
+                "opp_prob": 0.01,
+                "pipeline_value": 1000
+              },
+              "disqualify": {
+                "meeting_prob": 0.0,
+                "opp_prob": 0.0,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.04,
+                "opp_prob": 0.01,
+                "pipeline_value": 2000
+              }
+            }
+          },
+          {
+            "account_id": "acct_456",
+            "potential_outcomes": {
+              "human_touch": {
+                "meeting_prob": 0.14,
+                "opp_prob": 0.05,
+                "pipeline_value": 16000
+              },
+              "automated_outbound": {
+                "meeting_prob": 0.11,
+                "opp_prob": 0.04,
+                "pipeline_value": 12000
+              },
+              "nurture": {
+                "meeting_prob": 0.07,
+                "opp_prob": 0.02,
+                "pipeline_value": 6000
+              },
+              "recycle": {
+                "meeting_prob": 0.04,
+                "opp_prob": 0.01,
+                "pipeline_value": 1500
+              },
+              "disqualify": {
+                "meeting_prob": 0.0,
+                "opp_prob": 0.0,
+                "pipeline_value": 0
+              },
+              "wait": {
+                "meeting_prob": 0.08,
+                "opp_prob": 0.03,
+                "pipeline_value": 9000
+              }
+            }
+          }
+        ],
+        "contact_outcomes": [
+          {
+            "account_id": "acct_123",
+            "default_contact_id": "ct_4",
+            "contacts": [
+              {
+                "contact_id": "ct_1",
+                "meeting_gain": 0.18,
+                "opp_gain": 0.07,
+                "pipeline_gain": 22000
+              },
+              {
+                "contact_id": "ct_2",
+                "meeting_gain": 0.14,
+                "opp_gain": 0.05,
+                "pipeline_gain": 17000
+              },
+              {
+                "contact_id": "ct_4",
+                "meeting_gain": 0.05,
+                "opp_gain": 0.01,
+                "pipeline_gain": 3000
+              }
+            ]
+          },
+          {
+            "account_id": "acct_456",
+            "default_contact_id": "ct_3",
+            "contacts": [
+              {
+                "contact_id": "ct_3",
+                "meeting_gain": 0.06,
+                "opp_gain": 0.02,
+                "pipeline_gain": 5000
+              }
+            ]
+          }
+        ],
+        "trigger_outcomes": [
+          {
+            "account_id": "acct_123",
+            "triggers": [
+              {
+                "event_id": "evt_1",
+                "relevance_gain": 1.0
+              },
+              {
+                "event_id": "evt_3",
+                "relevance_gain": 0.72
+              }
+            ]
+          },
+          {
+            "account_id": "acct_456",
+            "triggers": [
+              {
+                "event_id": "evt_2",
+                "relevance_gain": 0.84
+              },
+              {
+                "event_id": "evt_4",
+                "relevance_gain": 0.51
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

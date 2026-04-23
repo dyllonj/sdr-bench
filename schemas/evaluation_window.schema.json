@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/evaluation_window.schema.json",
+  "title": "Evaluation Window",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "window_id",
+    "accounts",
+    "contacts",
+    "triggers",
+    "evidence",
+    "capacity_budget"
+  ],
+  "properties": {
+    "window_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accounts": {
+      "type": "array",
+      "items": {
+        "$ref": "account_snapshot.schema.json"
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "$ref": "contact_snapshot.schema.json"
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "items": {
+        "$ref": "trigger_event.schema.json"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "document_evidence.schema.json"
+      }
+    },
+    "capacity_budget": {
+      "$ref": "capacity_budget.schema.json"
+    }
+  }
+}

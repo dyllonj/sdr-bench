@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdr-bench.dev/schemas/document_evidence.schema.json",
+  "title": "Document Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "doc_id",
+    "account_id",
+    "source_type",
+    "published_ts",
+    "excerpt",
+    "allowed_for_grounding"
+  ],
+  "properties": {
+    "doc_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "published_ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "excerpt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_for_grounding": {
+      "type": "boolean"
+    },
+    "grounding_support": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "why_account_codes": {
+          "$ref": "#/$defs/reasonCodeArray"
+        },
+        "why_now_codes": {
+          "$ref": "#/$defs/reasonCodeArray"
+        },
+        "why_persona_codes": {
+          "$ref": "#/$defs/reasonCodeArray"
+        },
+        "why_channel_codes": {
+          "$ref": "#/$defs/reasonCodeArray"
+        },
+        "related_event_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "reasonCodeArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      }
+    }
+  }
+}
