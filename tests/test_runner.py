@@ -13,10 +13,13 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from sdr_bench.evaluator import load_json
+from sdr_bench.agent import AgentToolCall
+from sdr_bench.agent import AgentTurnResponse
 from sdr_bench.runner.adapters.base import AdapterResponse
 from sdr_bench.runner.prompts import build_window_prompt
 from sdr_bench.runner.repair import generate_with_repair
 from sdr_bench.runner.run import run_window_model
+from sdr_bench.runner.run import run_window_model_with_tools
 
 
 class QueueAdapter:
@@ -28,6 +31,28 @@ class QueueAdapter:
         if not self.responses:
             raise AssertionError("QueueAdapter ran out of responses")
         return self.responses.pop(0)
+
+
+class QueueToolAdapter:
+    def __init__(self, decisions: list[dict]) -> None:
+        self.name = "mock:tool"
+        self.decisions = decisions
+
+    def create_turn(self, messages, tools, *, max_tokens: int = 4096, temperature: float = 0.0):
+        return AgentTurnResponse(
+            text="Submit.",
+            tool_calls=[
+                AgentToolCall(
+                    id="call_1",
+                    name="submit_weekly_decisions",
+                    arguments={"decisions": self.decisions},
+                )
+            ],
+            input_tokens=8,
+            output_tokens=4,
+            latency_ms=2,
+            raw={},
+        )
 
 
 class RunnerTests(unittest.TestCase):
@@ -131,6 +156,20 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(artifact["submission"]["window_id"], self.window["window_id"])
         self.assertEqual(artifact["model_spec"], "mock:test")
         self.assertTrue(artifact["prompt_hash"])
+
+    def test_run_window_model_with_tools_uses_adapter_registry(self) -> None:
+        adapter = QueueToolAdapter(self.wait_submission["decisions"])
+        with mock.patch("sdr_bench.runner.run.load_adapter", return_value=adapter):
+            artifact = run_window_model_with_tools(
+                self.window,
+                model_spec="mock:tool",
+                seed=9,
+            )
+
+        self.assertEqual(artifact["submission"]["window_id"], self.window["window_id"])
+        self.assertEqual(artifact["model_spec"], "mock:tool")
+        self.assertEqual("tools", artifact["runner_mode"])
+        self.assertTrue(artifact["usage_log"]["finalized"])
 
     @unittest.skipUnless(os.getenv("SDR_BENCH_RUN_OLLAMA_TEST"), "set SDR_BENCH_RUN_OLLAMA_TEST=1 to enable")
     def test_openai_compatible_integration_with_ollama(self) -> None:

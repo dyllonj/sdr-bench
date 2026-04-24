@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from copy import deepcopy
 from typing import Any
 
 from sdr_bench.agent.sandbox import AgentSandbox
@@ -102,6 +103,7 @@ def run_window_agent_model(
     *,
     adapter: AgentTurnAdapter,
     model_spec: str,
+    budget: int | None = None,
     max_turns: int = 8,
     max_tokens: int = 4096,
     temperature: float = 0.0,
@@ -113,6 +115,10 @@ def run_window_agent_model(
     adapters only need to return normalized tool calls. The session log is kept
     in the returned artifact, not in model context.
     """
+
+    if budget is not None:
+        window_data = deepcopy(window_data)
+        window_data["capacity_budget"]["human_sdr_actions"] = budget
 
     sandbox = AgentSandbox(window_data)
     tools = agent_tool_definitions()
