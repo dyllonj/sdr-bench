@@ -4,7 +4,11 @@
 
 Given limited SDR capacity, can a model allocate human attention to the accounts where it creates the most incremental pipeline?
 
-This benchmark starts with prospecting allocation, then layers outreach and qualification on top. The design goal is to evaluate operating decisions, not just copy quality or propensity prediction.
+The benchmark direction is full-cycle enterprise SDR for B2B tech sales. It starts
+with prospecting allocation, then expands into account discovery, account
+research, buying-center mapping, qualification discovery, personalized outreach,
+engagement, seller handoff, and multi-week book management. The design goal is
+to evaluate operating decisions, not just copy quality or propensity prediction.
 
 ## Design Principles
 
@@ -66,7 +70,47 @@ v0 is explicitly scoped to an enterprise tech SDR motion.
 - Public leaderboard eligibility: net-new and product-led pre-opportunity accounts only.
 - Out of scope for v0 leaderboard: renewals, active open opportunities, post-sales expansion plays, and full email-writing quality.
 
-This keeps the benchmark close to the highest-value enterprise SDR bottleneck: deciding where scarce human research and personalization should go this week.
+This keeps the first benchmark slice close to the highest-value enterprise SDR
+bottleneck: deciding where scarce human research and personalization should go
+this week. The target benchmark shape is still full-cycle SDR; v0 should expose
+top-of-funnel and allocation slices first so pilot runs stay cheap and valid.
+
+## Full-Cycle Enterprise SDR Direction
+
+The benchmark should take the strongest ideas from adjacent sales-agent and
+people-search benchmarks while staying neutral and open.
+
+From Microsoft Sales Qualification Bench, SDR Bench adopts the idea that sales
+agent quality should be measured across research, outreach, and engagement jobs,
+with separate metrics for accuracy, relevance, completeness, grounding,
+personalization, qualification, and handoff timing.
+
+From PeopleSearchBench, SDR Bench adopts criteria-grounded verification for
+people and account discovery: explicit criteria should be extracted or provided,
+returned people/accounts should be checked against those criteria, and coverage
+should be scored separately from relevance precision.
+
+The difference is the objective. SDR Bench is not just "find people" or "write
+a qualified email." It measures whether an agent can run the full enterprise SDR
+motion and create incremental pipeline under scarce human capacity.
+
+Canonical stage metadata lives in `src/sdr_bench/stages.py`.
+
+| Stage | Benchmark role |
+|---|---|
+| `account_discovery` | Find ICP-fit accounts and candidate people from noisy sources. |
+| `account_research` | Build grounded account research tied to the seller's value prop. |
+| `buying_center_mapping` | Select complementary buying-center contacts. |
+| `qualification_discovery` | Identify need, authority, timing, budget, pain, and unknowns. |
+| `outreach_planning` | Plan channel, angle, and personalized first touch. |
+| `engagement_and_handoff` | Handle prospect turns, discovery, product answers, and seller handoff. |
+| `weekly_allocation` | Allocate scarce SDR effort across the current book. |
+| `multi_week_book_management` | Re-plan the book as state changes over multiple weeks. |
+
+Recommended staged modes:
+
+- `top_of_funnel`: `account_discovery`, `account_research`, `buying_center_mapping`, `qualification_discovery`
+- `full_cycle_sdr`: every canonical stage from discovery through multi-week book management
 
 ## V0 Decisions
 
