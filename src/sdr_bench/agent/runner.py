@@ -15,7 +15,7 @@ from sdr_bench.simulator.env import SDRBenchEnv
 
 
 def agent_tool_definitions() -> list[dict[str, Any]]:
-    """Return the stable public tool contract for the first sandbox slice."""
+    """Return the stable public tool contract for the agent sandbox."""
 
     return [
         {
@@ -39,6 +39,30 @@ def agent_tool_definitions() -> list[dict[str, Any]]:
                 "required": ["account_id"],
                 "properties": {
                     "account_id": {"type": "string", "minLength": 1},
+                },
+            },
+        },
+        {
+            "name": "get_seller_knowledge",
+            "description": "Fetch public seller value props, docs, case studies, objections, or handoff criteria.",
+            "input_schema": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "section": {
+                        "type": ["string", "null"],
+                        "enum": [
+                            "value_props",
+                            "case_studies",
+                            "product_docs",
+                            "objection_answers",
+                            "handoff_criteria",
+                            "qualification_criteria",
+                            None,
+                        ],
+                    },
+                    "query": {"type": ["string", "null"]},
+                    "limit": {"type": "integer", "minimum": 1, "maximum": 20},
                 },
             },
         },
@@ -83,7 +107,8 @@ def _initial_messages(
             "content": (
                 "You are participating in SDR Bench agent mode. Use only the provided "
                 "public tools. Hidden labels, oracle outcomes, and private scores are not "
-                "available. Submit final routing through submit_weekly_decisions."
+                "available. Use get_seller_knowledge for approved product and handoff "
+                "context. Submit final routing through submit_weekly_decisions."
             ),
         },
         {

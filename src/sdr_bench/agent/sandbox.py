@@ -8,6 +8,9 @@ from typing import Any
 
 from sdr_bench.agent.public_views import build_public_window_view
 from sdr_bench.agent.public_views import get_public_account_context
+from sdr_bench.agent.seller_knowledge import SellerKnowledgeError
+from sdr_bench.agent.seller_knowledge import default_seller_profile
+from sdr_bench.agent.seller_knowledge import query_seller_knowledge
 from sdr_bench.agent.trace import canonical_json_hash
 from sdr_bench.evaluator import materialize_effective_decisions
 from sdr_bench.evaluator import normalize_submission
@@ -29,11 +32,17 @@ class AgentSandbox:
         self,
         window_data: dict[str, Any],
         *,
+        seller_profile: dict[str, Any] | None = None,
         max_page_size: int = DEFAULT_MAX_PAGE_SIZE,
     ) -> None:
         if max_page_size < 1:
             raise ValueError("max_page_size must be positive")
         self._window_data = deepcopy(window_data)
+        self._seller_profile = (
+            default_seller_profile()
+            if seller_profile is None
+            else deepcopy(seller_profile)
+        )
         self.view = build_public_window_view(window_data)
         self.max_page_size = max_page_size
         self.finalized = False
@@ -123,6 +132,34 @@ class AgentSandbox:
             "window_id": self.window_id,
             **deepcopy(context),
         }
+        return self._ok_result(tool_name, result, started=started)
+
+    def get_seller_knowledge(
+        self,
+        *,
+        section: str | None = None,
+        query: str | None = None,
+        limit: int = 5,
+    ) -> dict[str, Any]:
+        started = time.perf_counter()
+        tool_name = "get_seller_knowledge"
+        try:
+            result = query_seller_knowledge(
+                self._seller_profile,
+                section=section,
+                query=query,
+                limit=limit,
+            )
+        except SellerKnowledgeError as exc:
+            return self._error_result(
+                tool_name,
+                {
+                    "code": exc.code,
+                    "message": exc.message,
+                    **exc.details,
+                },
+                started=started,
+            )
         return self._ok_result(tool_name, result, started=started)
 
     def submit_weekly_decisions(self, decisions: list[dict[str, Any]]) -> dict[str, Any]:
@@ -218,6 +255,8 @@ class AgentSandbox:
             return self.list_accounts(**tool_input)
         if name == "get_account_context":
             return self.get_account_context(**tool_input)
+        if name == "get_seller_knowledge":
+            return self.get_seller_knowledge(**tool_input)
         if name == "submit_weekly_decisions":
             return self.submit_weekly_decisions(**tool_input)
         return self._error_result(
@@ -286,6 +325,8 @@ class AgentSandbox:
     def _result_count(result: dict[str, Any]) -> int:
         if "accounts" in result and isinstance(result["accounts"], list):
             return len(result["accounts"])
+        if "items" in result and isinstance(result["items"], list):
+            return len(result["items"])
         if "submitted_decision_count" in result:
             return int(result["submitted_decision_count"])
         return 1

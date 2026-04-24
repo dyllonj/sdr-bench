@@ -42,10 +42,10 @@ agent environment while keeping the existing evaluator as the scoring authority.
 ## Phase 4A: Full-Cycle Enterprise SDR Expansion
 
 - [x] Document what SDR Bench borrows from Microsoft Sales Qualification Bench and PeopleSearchBench.
-- [ ] Add seller profile artifacts: neutral enterprise tech value prop, product docs, case studies, objection answers, competitor notes, and handoff criteria.
+- [x] Add seller profile artifacts: neutral enterprise tech value prop, product docs, case studies, objection answers, and handoff criteria.
 - [ ] Add `search_accounts` with criteria-grounded verification for ICP and trigger fit.
 - [ ] Add `search_people` and `compare_contacts` for buying-center discovery and coverage scoring.
-- [ ] Add `get_seller_knowledge` so product answers are grounded in approved seller materials.
+- [x] Add `get_seller_knowledge` so product answers are grounded in approved seller materials.
 - [ ] Add `draft_outreach` as a constrained plan/draft tool with citation requirements.
 - [ ] Add `get_engagement_history` and `submit_handoff_decision` for multi-turn qualification.
 - [ ] Add `PeopleSearchScore`, `QualificationScore`, `OutreachScore`, and `EngagementScore` to evaluator outputs.

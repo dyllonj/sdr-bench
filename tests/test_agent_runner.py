@@ -13,6 +13,7 @@ if str(SRC_DIR) not in sys.path:
 
 from sdr_bench.agent import AgentToolCall
 from sdr_bench.agent import AgentTurnResponse
+from sdr_bench.agent import agent_tool_definitions
 from sdr_bench.agent import run_window_agent_model
 from sdr_bench.evaluator import load_json
 
@@ -41,6 +42,14 @@ class AgentRunnerTests(unittest.TestCase):
     def setUp(self) -> None:
         self.window = load_json(ROOT_DIR / "examples" / "sample_window.json")
         self.submission = load_json(ROOT_DIR / "examples" / "sample_submission.json")
+
+    def test_agent_tool_definitions_include_seller_knowledge(self) -> None:
+        tool_names = {tool["name"] for tool in agent_tool_definitions()}
+
+        self.assertIn("list_accounts", tool_names)
+        self.assertIn("get_account_context", tool_names)
+        self.assertIn("get_seller_knowledge", tool_names)
+        self.assertIn("submit_weekly_decisions", tool_names)
 
     def test_run_window_agent_model_executes_tool_loop_until_submission(self) -> None:
         adapter = QueueAgentAdapter(

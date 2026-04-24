@@ -1,0 +1,83 @@
+{
+  "seller_profile_id": "neutral_enterprise_tech_v1",
+  "seller": {
+    "company_name_redacted": true,
+    "category": "enterprise data security and workflow automation platform",
+    "target_segments": ["mid_market", "enterprise"],
+    "primary_buyers": ["IT", "Security", "Engineering", "Operations"]
+  },
+  "value_props": [
+    {
+      "knowledge_id": "vp_secure_workflows",
+      "title": "Secure workflow automation",
+      "content": "Helps IT and security teams automate approval-heavy workflows while keeping audit trails, access policy, and operational ownership clear.",
+      "tags": ["security", "automation", "audit"]
+    },
+    {
+      "knowledge_id": "vp_data_governance",
+      "title": "Governed data access",
+      "content": "Centralizes data access requests, policy checks, and exception handling for teams using cloud data warehouses and analytics platforms.",
+      "tags": ["data", "governance", "compliance"]
+    }
+  ],
+  "case_studies": [
+    {
+      "knowledge_id": "case_financial_services_controls",
+      "title": "Financial services access review",
+      "content": "A regulated financial services customer reduced manual access-review work by standardizing approval flows and evidence capture.",
+      "tags": ["financial_services", "compliance", "access_review"]
+    },
+    {
+      "knowledge_id": "case_platform_team_growth",
+      "title": "Platform team request automation",
+      "content": "A fast-growing software company used the platform to route internal data and infrastructure requests without increasing platform-team headcount.",
+      "tags": ["software", "platform", "scale"]
+    }
+  ],
+  "product_docs": [
+    {
+      "knowledge_id": "doc_integrations",
+      "title": "Core integrations",
+      "content": "The platform integrates with common identity providers, cloud data warehouses, ticketing systems, and collaboration tools.",
+      "tags": ["integrations", "identity", "data_platform"]
+    },
+    {
+      "knowledge_id": "doc_security_controls",
+      "title": "Security controls",
+      "content": "Supported controls include role-based access, policy approval steps, audit logging, reviewer assignment, and escalation rules.",
+      "tags": ["security", "rbac", "audit"]
+    }
+  ],
+  "objection_answers": [
+    {
+      "knowledge_id": "obj_existing_ticketing",
+      "title": "We already use a ticketing system",
+      "content": "Position the platform as the policy and workflow layer that coordinates ticketing, identity, and data systems rather than replacing every ticket.",
+      "tags": ["ticketing", "workflow", "positioning"]
+    },
+    {
+      "knowledge_id": "obj_timing",
+      "title": "This is not a priority this quarter",
+      "content": "Ask whether compliance deadlines, access-review cycles, headcount constraints, or platform growth create a reason to revisit timing.",
+      "tags": ["timing", "discovery", "priority"]
+    }
+  ],
+  "handoff_criteria": [
+    {
+      "knowledge_id": "handoff_ae_ready",
+      "title": "AE handoff readiness",
+      "content": "Hand off when there is a relevant business pain, a plausible buying-center contact, a current initiative or deadline, and agreement to meet.",
+      "criteria": ["pain", "authority_or_influence", "timing", "meeting_intent"],
+      "tags": ["handoff", "qualification"]
+    }
+  ],
+  "qualification_criteria": [
+    {
+      "knowledge_id": "qual_enterprise_sdr",
+      "title": "Enterprise SDR qualification",
+      "content": "Qualify need, authority or influence, timing, current workflow, data or security environment, and expected business impact.",
+      "criteria": ["need", "authority", "timing", "environment", "impact"],
+      "tags": ["qualification", "discovery"]
+    }
+  ]
+}

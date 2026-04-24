@@ -47,6 +47,7 @@ Source: https://arxiv.org/abs/2603.27476
 ## Full-Cycle Stage Model
 
 The canonical stage catalog lives in `src/sdr_bench/stages.py`.
+The neutral seller-knowledge fixture starts in `examples/sample_seller_profile.json`.
 
 | Stage | What the agent does | Primary evidence |
 |---|---|---|
@@ -105,18 +106,17 @@ without SDR effort.
 
 ## Tooling Implications
 
-Current tools cover the allocation core:
+Current tools cover the allocation core plus neutral seller knowledge:
 
 - `list_accounts`
 - `get_account_context`
+- `get_seller_knowledge`
 - `submit_weekly_decisions`
 
 Next tool families should add the rest of the motion:
 
 - `search_accounts` for prospect discovery and ICP filtering.
 - `search_people` and `compare_contacts` for buying-center mapping.
-- `get_seller_knowledge` for value props, case studies, product docs, and
-  approved answers.
 - `draft_outreach` for constrained outreach-plan generation.
 - `get_engagement_history` for multi-turn lead qualification state.
 - `submit_handoff_decision` for accepted meeting or seller handoff decisions.

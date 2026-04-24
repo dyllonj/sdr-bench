@@ -146,6 +146,28 @@ class AgentSandboxTests(unittest.TestCase):
             {document["account_id"] for document in context["evidence"]},
         )
 
+    def test_get_seller_knowledge_returns_public_filtered_items(self) -> None:
+        sandbox = AgentSandbox(self.window)
+
+        knowledge = self.assertToolOk(
+            sandbox.get_seller_knowledge(section="product_docs", query="security", limit=3),
+            tool_name="get_seller_knowledge",
+        )
+
+        self.assertEqual("neutral_enterprise_tech_v1", knowledge["seller_profile_id"])
+        self.assertEqual("product_docs", knowledge["section"])
+        self.assertGreaterEqual(knowledge["total_matches"], 1)
+        self.assertTrue(knowledge["items"])
+        self.assertEqual("product_docs", knowledge["items"][0]["section"])
+        self.assertNoScoringOnlyKeys(knowledge)
+
+        bad_section = self.assertToolError(
+            sandbox.get_seller_knowledge(section="hidden_labels"),
+            tool_name="get_seller_knowledge",
+            code="unknown_section",
+        )
+        self.assertIn("allowed_sections", bad_section)
+
     def test_unknown_accounts_return_structured_errors(self) -> None:
         sandbox = AgentSandbox(self.window)
 
