@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from sdr_bench.agent.runner import run_policy_episode_agent_model as run_policy_episode_tool_agent
 from sdr_bench.io_utils import dump_json
 from sdr_bench.io_utils import load_json
 from sdr_bench.runner.adapters import load_adapter
@@ -111,12 +112,41 @@ def run_policy_episode_model(
     }
 
 
+def run_policy_episode_model_with_tools(
+    episode_data: dict[str, Any],
+    labels_data: dict[str, Any],
+    *,
+    model_spec: str,
+    max_tokens: int = 4096,
+    temperature: float = 0.0,
+    seed: int = 0,
+) -> dict[str, Any]:
+    adapter = load_adapter(model_spec)
+    if not hasattr(adapter, "create_turn"):
+        raise RuntimeError(f"Adapter {model_spec} does not support tool-mode turns.")
+    return run_policy_episode_tool_agent(
+        episode_data,
+        labels_data,
+        adapter=adapter,
+        model_spec=model_spec,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        seed=seed,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run a model adapter through an SDR Bench policy episode.")
     parser.add_argument("--episode", required=True, help="Path to a public policy episode JSON file.")
     parser.add_argument("--episode-labels", help="Optional path to the hidden policy episode labels.")
     parser.add_argument("--model", required=True, help="Model adapter spec.")
     parser.add_argument("--out", required=True, help="Output artifact path.")
+    parser.add_argument(
+        "--interaction-mode",
+        choices=("direct", "tools"),
+        default="direct",
+        help="Model interaction mode. direct preserves the original prompt runner; tools uses the public agent sandbox.",
+    )
     parser.add_argument("--max-tokens", type=int, default=4096, help="Maximum completion tokens per week.")
     parser.add_argument("--temperature", type=float, default=0.0, help="Sampling temperature.")
     parser.add_argument("--seed", type=int, default=0, help="Deterministic run seed recorded in output.")
@@ -126,14 +156,24 @@ def main() -> None:
     episode_data = load_json(args.episode)
     labels_path = Path(args.episode_labels) if args.episode_labels else infer_episode_labels_path(args.episode)
     labels_data = load_json(labels_path)
-    artifact = run_policy_episode_model(
-        episode_data,
-        labels_data,
-        model_spec=args.model,
-        max_tokens=args.max_tokens,
-        temperature=args.temperature,
-        seed=args.seed,
-    )
+    if args.interaction_mode == "tools":
+        artifact = run_policy_episode_model_with_tools(
+            episode_data,
+            labels_data,
+            model_spec=args.model,
+            max_tokens=args.max_tokens,
+            temperature=args.temperature,
+            seed=args.seed,
+        )
+    else:
+        artifact = run_policy_episode_model(
+            episode_data,
+            labels_data,
+            model_spec=args.model,
+            max_tokens=args.max_tokens,
+            temperature=args.temperature,
+            seed=args.seed,
+        )
     dump_json(args.out, artifact, pretty=args.pretty)
 
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,7 @@ from sdr_bench.agent import AgentToolCall
 from sdr_bench.agent import AgentTurnResponse
 from sdr_bench.agent import run_policy_episode_agent_model
 from sdr_bench.evaluator import load_json
+from sdr_bench.runner.episode_runner import run_policy_episode_model_with_tools
 
 
 class EpisodeQueueAdapter:
@@ -88,6 +90,25 @@ class AgentPolicyRunnerTests(unittest.TestCase):
         self.assertIn("Public episode history", second_turn_context)
         self.assertNotIn("metrics", second_turn_context)
         self.assertNotIn("pipeline_value", second_turn_context)
+
+    def test_episode_runner_tool_mode_uses_adapter_registry(self) -> None:
+        episode = load_json(ROOT_DIR / "examples" / "sample_episode.json")
+        labels = load_json(ROOT_DIR / "examples" / "sample_policy_labels.json")
+        policy_submission = load_json(ROOT_DIR / "examples" / "sample_policy_submission.json")
+        adapter = EpisodeQueueAdapter(policy_submission["submissions"])
+
+        with mock.patch("sdr_bench.runner.episode_runner.load_adapter", return_value=adapter):
+            artifact = run_policy_episode_model_with_tools(
+                episode,
+                labels,
+                model_spec="mock:episode-agent",
+                seed=6,
+            )
+
+        self.assertEqual("tools", artifact["runner_mode"])
+        self.assertEqual("mock:episode-agent", artifact["model_spec"])
+        self.assertEqual(episode["episode_id"], artifact["policy_submission"]["episode_id"])
+        self.assertEqual(2, len(artifact["policy_submission"]["submissions"]))
 
 
 if __name__ == "__main__":
