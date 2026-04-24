@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Protocol
 from typing import Any
 
 
@@ -39,3 +40,39 @@ class TraceEvent:
     payload: Any
     event_index: int | None = None
     public_only: bool = True
+
+
+@dataclass(slots=True)
+class AgentToolCall:
+    """Provider-neutral model-requested tool call."""
+
+    id: str
+    name: str
+    arguments: JsonObject
+
+
+@dataclass(slots=True)
+class AgentTurnResponse:
+    """One provider-neutral agent turn response."""
+
+    text: str
+    tool_calls: list[AgentToolCall]
+    input_tokens: int
+    output_tokens: int
+    latency_ms: int
+    raw: JsonObject
+
+
+class AgentTurnAdapter(Protocol):
+    """Minimal protocol for tool-mode model adapters."""
+
+    name: str
+
+    def create_turn(
+        self,
+        messages: list[JsonObject],
+        tools: list[JsonObject],
+        *,
+        max_tokens: int = 4096,
+        temperature: float = 0.0,
+    ) -> AgentTurnResponse: ...
