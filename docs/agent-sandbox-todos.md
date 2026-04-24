@@ -18,6 +18,7 @@ agent environment while keeping the existing evaluator as the scoring authority.
 - [ ] Add `submit_weekly_decisions(decisions)` as the only mutating/finalizing tool.
 - [ ] Return structured tool errors for invalid args, unknown IDs, and finalized runs.
 - [ ] Log tool calls with stable result hashes, counts, latency, and public-only markers.
+- [ ] Keep tools behind a narrow `execute(name, input)`-style boundary so the harness can swap hands without changing model-visible contracts.
 
 ## Phase 3: Agent Runner
 
@@ -26,6 +27,8 @@ agent environment while keeping the existing evaluator as the scoring authority.
 - [ ] Add an optional adapter protocol for provider tool turns.
 - [ ] Implement mocked agent runner tests before provider-specific code.
 - [ ] Add OpenAI and Anthropic tool-turn support behind the optional protocol.
+- [ ] Treat the harness as stateless and recoverable from the durable trace/session artifact.
+- [ ] Keep the session log outside the model context window; let future harnesses choose how much event history to rehydrate.
 
 ## Phase 4: Staged Benchmark Modes
 
@@ -42,3 +45,12 @@ agent environment while keeping the existing evaluator as the scoring authority.
 - [ ] Cache model/tool-turn results by model, prompt hash, dataset hash, schema hash, and seed.
 - [ ] Use hosted batch/flex APIs for pilots; defer rented GPUs until the tool contract is stable.
 - [ ] Run a small frontier canary only after local baseline/oracle audits pass.
+
+## Phase 6: Managed-Agent Architecture Constraints
+
+- [ ] Decouple the brain, hands, and session: model/harness, tool sandbox, and event log must be replaceable independently.
+- [ ] Store append-only trace/session events durably enough that a failed harness can resume from the last event.
+- [ ] Never place secrets, hidden labels, or scorer state inside model-visible tool results or sandbox state.
+- [ ] Model context is a cache, not the source of truth; every irreversible compaction must be recoverable from trace/session events.
+- [ ] Design for many brains and many hands: multiple model runs may share a public dataset, and one run may use multiple tool backends later.
+- [ ] Avoid harness assumptions that only fit current models; keep context resets, search aids, and ranking helpers optional and measurable.
