@@ -11,6 +11,7 @@ from sdr_bench.agent.public_views import public_window_view_to_dict
 from sdr_bench.agent.public_views import publicize_window
 from sdr_bench.agent.public_views import redact_scoring_fields
 from sdr_bench.agent.runner import agent_tool_definitions
+from sdr_bench.agent.runner import run_policy_episode_agent_model
 from sdr_bench.agent.runner import run_window_agent_model
 from sdr_bench.agent.sandbox import AgentSandbox
 from sdr_bench.agent.trace import build_trace_event
@@ -49,6 +50,7 @@ __all__ = [
     "publicize_window",
     "redact_scoring_fields",
     "agent_tool_definitions",
+    "run_policy_episode_agent_model",
     "run_window_agent_model",
     "trace_event_to_dict",
     "trace_hash",

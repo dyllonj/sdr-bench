@@ -11,6 +11,7 @@ from sdr_bench.agent.sandbox import AgentSandbox
 from sdr_bench.agent.types import AgentTurnAdapter
 from sdr_bench.agent.types import AgentToolCall
 from sdr_bench.runner.repair import wait_everything_submission
+from sdr_bench.simulator.env import SDRBenchEnv
 
 
 def agent_tool_definitions() -> list[dict[str, Any]]:
@@ -70,13 +71,18 @@ def _prompt_hash(messages: list[dict[str, Any]], tools: list[dict[str, Any]]) ->
     return hashlib.sha256(payload).hexdigest()
 
 
-def _initial_messages(window_id: str, budget: int) -> list[dict[str, Any]]:
-    return [
+def _initial_messages(
+    window_id: str,
+    budget: int,
+    *,
+    public_history: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    messages = [
         {
             "role": "system",
             "content": (
                 "You are participating in SDR Bench agent mode. Use only the provided "
-                "public tools. Hidden labels, oracle outcomes, and scorer metrics are not "
+                "public tools. Hidden labels, oracle outcomes, and private scores are not "
                 "available. Submit final routing through submit_weekly_decisions."
             ),
         },
@@ -88,6 +94,18 @@ def _initial_messages(window_id: str, budget: int) -> list[dict[str, Any]]:
             ),
         },
     ]
+    if public_history:
+        messages.append(
+            {
+                "role": "user",
+                "content": (
+                    "Public episode history so far. This contains only prior compliance "
+                    "receipts and issue counts, not hidden-label scoring feedback:\n"
+                    + json.dumps(public_history, sort_keys=True)
+                ),
+            }
+        )
+    return messages
 
 
 def _tool_call_to_dict(call: AgentToolCall) -> dict[str, Any]:
@@ -108,6 +126,7 @@ def run_window_agent_model(
     max_tokens: int = 4096,
     temperature: float = 0.0,
     seed: int = 0,
+    public_history: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Run one offline window through an agent tool loop.
 
@@ -125,6 +144,7 @@ def run_window_agent_model(
     messages = _initial_messages(
         sandbox.window_id,
         window_data["capacity_budget"]["human_sdr_actions"],
+        public_history=public_history,
     )
     initial_prompt_hash = _prompt_hash(messages, tools)
 
@@ -195,6 +215,76 @@ def run_window_agent_model(
             "latency_ms": total_latency_ms,
         },
         "prompt_hash": initial_prompt_hash,
+        "model_spec": model_spec,
+        "runner_mode": "tools",
+        "seed": seed,
+    }
+
+
+def run_policy_episode_agent_model(
+    episode_data: dict[str, Any],
+    labels_data: dict[str, Any],
+    *,
+    adapter: AgentTurnAdapter,
+    model_spec: str,
+    max_tokens: int = 4096,
+    temperature: float = 0.0,
+    seed: int = 0,
+) -> dict[str, Any]:
+    """Run a policy episode through the public agent sandbox week by week."""
+
+    env = SDRBenchEnv(episode_data, seed=seed, labels_data=labels_data)
+    state = env.reset()
+    public_history: list[dict[str, Any]] = []
+    submissions: list[dict[str, Any]] = []
+    window_logs: list[dict[str, Any]] = []
+    prompt_hashes: list[str] = []
+
+    while state is not None:
+        artifact = run_window_agent_model(
+            state["window"],
+            adapter=adapter,
+            model_spec=model_spec,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            seed=seed,
+            public_history=public_history,
+        )
+        next_state, outcome, done = env.step(artifact["submission"])
+        public_receipt = {
+            "window_id": state["window_id"],
+            "issue_count": len(outcome["issues"]),
+            "compliance": outcome["compliance"],
+        }
+        public_history.append(public_receipt)
+        submissions.append(artifact["submission"])
+        prompt_hashes.append(artifact["prompt_hash"])
+        window_logs.append(
+            {
+                "window_id": state["window_id"],
+                "usage_log": artifact["usage_log"],
+                "public_outcome": public_receipt,
+            }
+        )
+        state = None if done else next_state
+
+    total_input_tokens = sum(item["usage_log"]["input_tokens"] for item in window_logs)
+    total_output_tokens = sum(item["usage_log"]["output_tokens"] for item in window_logs)
+    total_latency_ms = sum(item["usage_log"]["latency_ms"] for item in window_logs)
+    return {
+        "policy_submission": {
+            "episode_id": episode_data["episode_id"],
+            "submissions": submissions,
+        },
+        "usage_log": {
+            "runner_mode": "tools",
+            "windows": window_logs,
+            "public_history": public_history,
+            "input_tokens": total_input_tokens,
+            "output_tokens": total_output_tokens,
+            "latency_ms": total_latency_ms,
+        },
+        "prompt_hashes": prompt_hashes,
         "model_spec": model_spec,
         "runner_mode": "tools",
         "seed": seed,
