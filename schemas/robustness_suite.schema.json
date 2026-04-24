@@ -17,7 +17,7 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "#/$defs/case"
+        "$ref": "https://sdr-bench.dev/schemas/robustness_suite.schema.json#/$defs/case"
       }
     }
   },

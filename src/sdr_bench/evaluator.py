@@ -790,6 +790,35 @@ def build_score_normalization(
     }
 
 
+COMPLIANCE_MULTIPLIED_METRICS = {
+    "EnterpriseAllocationScore",
+    "OfflineScore",
+    "FitScore",
+    "LiftScore",
+    "precision_at_capacity",
+    "ndcg_at_capacity",
+    "uplift_ratio_at_capacity",
+    "action_policy_ratio",
+}
+
+
+def apply_compliance_multiplier(
+    metrics: dict[str, Any],
+    compliance: dict[str, Any],
+) -> dict[str, Any]:
+    """Apply budget-compliance penalties to score/ranking metrics only."""
+    multiplier = compliance.get("compliance_multiplier", 1.0)
+    if not isinstance(multiplier, (int, float)) or math.isclose(multiplier, 1.0):
+        return metrics
+
+    adjusted = deepcopy(metrics)
+    for metric_name in COMPLIANCE_MULTIPLIED_METRICS:
+        value = adjusted.get(metric_name)
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            adjusted[metric_name] = value * multiplier
+    return adjusted
+
+
 def has_inbound_intent(account: dict[str, Any]) -> bool:
     web_engagement = account["web_engagement"]
     return (
@@ -2596,8 +2625,13 @@ def evaluate_window(
         materialized_effective_decisions,
         labels_data=labels_data,
     )
+    computed_metrics = apply_compliance_multiplier(computed_metrics, compliance)
     report["metrics"].update(computed_metrics)
     report["notes"].extend(metric_notes)
+    if not math.isclose(compliance.get("compliance_multiplier", 1.0), 1.0):
+        report["notes"].append(
+            "Budget-sensitive score metrics include the compliance multiplier for over-budget submissions."
+        )
     raw_slice_diagnostics = build_window_slice_diagnostics(
         window_data,
         materialized_effective_decisions,

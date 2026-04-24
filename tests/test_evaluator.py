@@ -358,6 +358,51 @@ class EvaluatorTests(unittest.TestCase):
         self.assertEqual(coerced["chosen_action"], "wait")
         self.assertEqual(coerced["coerce_reason"], "over_budget_human_touch")
 
+    def test_over_budget_compliance_multiplier_penalizes_budget_sensitive_scores(self) -> None:
+        valid_wait_submission = json.loads(json.dumps(self.submission))
+        valid_wait_submission["decisions"][1] = {
+            "account_id": "acct_456",
+            "chosen_action": "wait",
+            "action_score": 0.05,
+        }
+        valid_wait_report = evaluate_window(
+            self.window,
+            valid_wait_submission,
+            labels_data=self.hidden_labels,
+        )
+
+        over_budget_submission = json.loads(json.dumps(self.submission))
+        over_budget_submission["decisions"][1] = {
+            "account_id": "acct_456",
+            "human_touch_rank": 2,
+            "chosen_action": "human_touch",
+            "action_score": 0.88,
+            "selected_contacts": ["ct_3"],
+            "primary_trigger_event_id": "evt_2",
+            "evidence_brief": {
+                "why_account_codes": ["enterprise_icp_fit"],
+                "why_now_code": "usage_change_recent",
+                "why_persona_code": "technical_buyer",
+                "why_channel_code": "email_valid",
+                "citations": ["doc_992"],
+            },
+        }
+        over_budget_report = evaluate_window(
+            self.window,
+            over_budget_submission,
+            labels_data=self.hidden_labels,
+        )
+
+        self.assertEqual(over_budget_report["compliance"]["compliance_multiplier"], 0.95)
+        self.assertAlmostEqual(
+            over_budget_report["metrics"]["OfflineScore"],
+            valid_wait_report["metrics"]["OfflineScore"] * 0.95,
+        )
+        self.assertAlmostEqual(
+            over_budget_report["metrics"]["GroundingScore"],
+            valid_wait_report["metrics"]["GroundingScore"],
+        )
+
     def test_invalid_contact_is_dropped_before_scoring(self) -> None:
         invalid_contact_submission = json.loads(json.dumps(self.submission))
         invalid_contact_submission["decisions"][0]["selected_contacts"].append("ct_3")

@@ -108,7 +108,7 @@ def _collect_model_rows(index: dict[str, Any], results_dir: Path) -> list[dict[s
         offline_score = _average(offline_norm)
         policy_score = _average(policy_norm)
         robustness_score = _average(robustness_norm)
-        public_score = _average([offline_score, policy_score, robustness_score])
+        public_score = _average([offline_score, policy_score])
         total_input_tokens = sum(
             record["artifact"]["usage_log"].get("input_tokens", 0)
             for mode in payloads.values()

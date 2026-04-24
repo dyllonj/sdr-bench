@@ -59,22 +59,22 @@
                   ],
                   "properties": {
                     "human_touch": {
-                      "$ref": "#/$defs/policyTransition"
+                      "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/policyTransition"
                     },
                     "automated_outbound": {
-                      "$ref": "#/$defs/policyTransition"
+                      "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/policyTransition"
                     },
                     "nurture": {
-                      "$ref": "#/$defs/policyTransition"
+                      "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/policyTransition"
                     },
                     "recycle": {
-                      "$ref": "#/$defs/policyTransition"
+                      "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/policyTransition"
                     },
                     "disqualify": {
-                      "$ref": "#/$defs/policyTransition"
+                      "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/policyTransition"
                     },
                     "wait": {
-                      "$ref": "#/$defs/policyTransition"
+                      "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/policyTransition"
                     }
                   }
                 }
@@ -102,7 +102,7 @@
           "type": "boolean"
         },
         "next_window_outcome_modifiers": {
-          "$ref": "#/$defs/actionOutcomeModifierMap"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifierMap"
         }
       }
     },
@@ -111,22 +111,22 @@
       "additionalProperties": false,
       "properties": {
         "human_touch": {
-          "$ref": "#/$defs/actionOutcomeModifier"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifier"
         },
         "automated_outbound": {
-          "$ref": "#/$defs/actionOutcomeModifier"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifier"
         },
         "nurture": {
-          "$ref": "#/$defs/actionOutcomeModifier"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifier"
         },
         "recycle": {
-          "$ref": "#/$defs/actionOutcomeModifier"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifier"
         },
         "disqualify": {
-          "$ref": "#/$defs/actionOutcomeModifier"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifier"
         },
         "wait": {
-          "$ref": "#/$defs/actionOutcomeModifier"
+          "$ref": "https://sdr-bench.dev/schemas/policy_episode_labels.schema.json#/$defs/actionOutcomeModifier"
         }
       }
     },
